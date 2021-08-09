@@ -1,0 +1,89 @@
+{%extends 'base_min.html'%}
+{%block content%}
+{%load static%}
+
+
+{%if category_news%}
+{%for item in category_name%}
+<div style="background-color: rgb(0, 191, 255);
+             color: rgb(255, 255, 255);
+             padding:20px;
+             margin-bottom:20px;
+            border-radius:20px" class="text-center">
+    <h1 style=" text-transform: uppercase;">{{item.name}}</h1>
+
+</div>
+
+{%endfor%}
+
+<!--<h1>Thể loại: {{cats}} </h1>-->
+
+
+<div class="row">
+    {%for post in category_news%}
+    <div class="col-md-6">
+        {%if post.header_image%}
+                <div style="width: 100%;
+                          height: 165px;
+                          margin: 2em 0;
+                          border: 3px solid #E18728;
+                          border-radius: 10px;
+                          background-color: white;">
+                    <div style="padding:5px">
+
+                        <img style="float:left;width:170px;height:150px; padding:5px" src="{{post.header_image.url}}" class="img-responsive">
+
+                        <a style="font-weight: bold;color:black" href="{% url 'news_detail' post.pk %}">{{post}}</a>
+                        <br/>
+                        <br/>
+                        <div style="margin-top:4px;font-size:18px">
+                            <p>{{post.body | slice:":100"|safe}}...</p>
+                        </div>
+
+                    </div>
+                </div>
+        {%else%}
+                <div style="width:  100%;
+                          height: 165px;
+                         margin: 2em 0;
+                          border: 3px solid #E18728;
+                          border-radius: 10px;
+                          background-color: white;">
+                    <div style="padding:5px">
+
+                        <img style="float:left;width:170px;height:150px; padding:5px" src="{%static 'images/1.jpg'%}" class="img-responsive">
+
+
+                        <a style="font-weight: bold;color:black" href="{% url 'news_detail' post.pk %}">{{post}}</a>
+                        {% if user.is_authenticated%}
+                        {% ifequal user.groups.all.0.name "PostMan" %}
+                        - <a href="{%url 'update_news' post.pk %}">Sửa</a>
+                        - <a href="{%url 'delete_news' post.pk %}">Xóa</a>
+                        {%endifequal%}
+                        {% endif %}
+                        <br/>
+
+                        <span>Ngày đăng:{{post.news_date}} </span>
+
+                        <br/>
+                        <br/>
+                        <div style="margin-top:4px;margin-left:5px;font-size:18px;font-weight: normal">
+                            <p >{{post.body|slice:":100"|safe}}...</p>
+                        </div>
+
+                    </div>
+        </div>
+        {%endif%}
+    </div>
+    {%endfor%}
+</div>
+
+
+
+
+
+{%else%}
+<h2>Không có thể loại bạn chọn</h2>
+{%endif%}
+
+{%endblock%}

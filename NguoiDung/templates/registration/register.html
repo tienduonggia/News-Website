@@ -1,0 +1,64 @@
+{%extends 'base_min.html'%}
+{%block title%} ĐĂNG KÝ{%endblock%}
+
+{%block content%}
+
+
+<div style="border-radius: 25px;
+  border: 2px solid black;
+
+  margin-left:35%;
+  margin-top:15px;
+  width: 400px;
+  height: 850px; " xmlns:border-radius="http://www.w3.org/1999/xhtml">
+<div style="padding:20px">
+    <br>
+    <h1 style="text-align:center; color:red; font-size:50px;padding-top:10px" >REGISTER</h1>
+    <hr style="border: 1px solid red;">
+    <form method="POST">
+        {% csrf_token %}
+        <label>Tài khoản: </label>
+        <br>
+        <input type="text" name="username"
+               style=" width:350px;margin-top:5px"/>
+        <p style="color:red; margin-left:8px" >  Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</p>
+        <br>
+        <label >Tên: </label>
+        <br>
+        <input type="text" name="first_name"
+               style=" width:350px;margin-top:5px"/>
+        <br>
+        <label style="margin-top:20px;">Họ: </label>
+        <br>
+        <input type="text" name="last_name"
+               style=" width:350px;margin-top:5px"/>
+
+        <label style="margin-top:20px;">Email: </label>
+        <br>
+        <input type="email" name="email"
+               style=" width:350px;margin-top:5px"/>
+        <br>
+        <label style="margin-top:20px;">Mật khẩu: </label>
+        <br>
+        <input type="password" name="password1"
+               style=" width:350px;margin-top:5px"/>
+        <ul style="margin-left:30px; color:red">
+            <li>Your password can’t be too similar to your other personal information.</li>
+            <li>   Your password must contain at least 8 characters.</li>
+            <li>   Your password can’t be a commonly used password.</li>
+            <li>   Your password can’t be entirely numeric.</li>
+        </ul>
+        <br>
+        <label >Nhập lại mật khẩu: </label>
+        <br>
+        <input type="password" name="password2"
+               style=" width:350px;margin-top:5px"/>
+
+        <button class="btn btn-danger btn-block"type="submit" class="btn btn-secondary" style="margin-top:25px; width:350px; ">REGISTER</button>
+    </form>
+</div>
+</div>
+<br>
+<br>
+
+{%endblock%}

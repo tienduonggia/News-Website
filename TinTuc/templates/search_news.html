@@ -1,0 +1,87 @@
+{%extends 'base_min.html'%}
+{%block title%} TÌM KIẾM{%endblock%}
+
+{%block content%}
+{%load static%}
+
+{% if searchpost %}
+    <h2 style="text-align:center">  TÌM KIẾM <BR> Bạn đang tìm: {{searchpost}} </h2>
+    <hr>
+    {%for post in news%}
+        {%if post.header_image%}
+                <div style="width: 100%;
+                  height: 165px;
+                  margin: 2em 0;
+                  border: 3px solid #E18728;
+                  border-radius: 10px;
+                  background-color: white;">
+                    <div style="padding:5px">
+                        <img style="float:left;width:170px;height:150px; padding:5px" src="{{post.header_image.url}}" class="img-responsive">
+                        <a style="font-weight: bold;color:black" href="{% url 'news_detail' post.pk %}">{{post}}</a>
+                        <br/>
+                        <br/>
+                        <div style="margin-top:4px;font-size:18px">
+                        <p >{{post.body|slice:":500"|safe}}...</p>
+                            </div>
+
+                    </div>
+
+                </div>
+        {%else%}
+                <div style="width:  100%;
+                  height: 165px;
+                  margin: 2em 0;
+                  border: 3px solid #E18728;
+                  border-radius: 10px;
+                  background-color: white;">
+                    <div style="padding:5px">
+
+                        <img style="float:left;width:170px;height:150px; padding:5px" src="{%static 'images/1.jpg'%}" class="img-responsive">
+
+
+                        <a style="font-weight: bold;color:black" href="{% url 'news_detail' post.pk %}">{{post}}</a>
+                        <br/>
+                        <br/>
+                        <div style="margin-top:4px;margin-left:5px;font-size:18px;font-weight: normal">
+                            <p >{{post.body|slice:":500"|safe}}...</p>
+                        </div>
+
+                    </div>
+                </div>
+        {%endif%}
+    {%endfor%}
+{%else%}
+    <h1>Bạn hãy nhập gì đó để tìm kiếm chứ</h1>
+{% endif%}
+
+{%endblock%}
+
+
+
+{% if searchpost %}
+<div class ="form-group">
+    <h1>TÌM KIẾM</h1>
+    <h2>   Bạn đang tìm: {{searchpost}} </h2>
+
+
+    <div style="position:relative">
+        {%for post in news%}
+        <article style="width: 100%;    border-bottom: 1px solid #eee; padding-bottom: 8px;margin-bottom: 18px;position:relative" >
+            <a style="width: 150px;
+                        height: 100px;
+                        float: left;
+                        margin: 3px 15px 10px 0;display: block;
+                        overflow: hidden;
+                        background: #ddd;" href="{% url 'news_detail' post.pk %}">
+                <img src="{{post.header_image.url}}" class="img-responsive">
+            </a>
+            <h2><a href="{% url 'news_detail' post.pk %}">{{post}}</a></h2>
+
+        </article>
+        {%endfor%}
+        {%else%}
+        <h1>Bạn hãy nhập gì đó để tìm kiếm chứ</h1>
+    </div>
+    {% endif%}
+
+</div>

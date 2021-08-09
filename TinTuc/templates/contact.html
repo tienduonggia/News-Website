@@ -1,0 +1,79 @@
+{%extends 'base_min.html'%}
+{%block title%} Liện hệ {%endblock%}
+
+{%block content%}
+
+
+<h1>THÊM BÀI MỚI </h1>
+
+<div class ="form-group">
+    <form method="POST" >
+        {% csrf_token %}
+        <input type="text" value="enter your full name" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'enter your full name';}" name="fullname" required="">
+        <input type="email" value="enter your email address" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'enter your email address';}"name="email" required="">
+        <textarea onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Message...';}" required=""name="mess">Message...</textarea>
+        <button type="submit" class="btn btn-secondary">Gửi bài</button>
+    </form>
+
+    <div class="contact">
+        <div class="container">
+
+            <div class="contact-grids">
+                <div class="col-md-3 contact-grid">
+                    <div class="call">
+                        <div class="col-xs-3 contact-grdl">
+                            <span class="glyphicon glyphicon-phone" aria-hidden="true"></span>
+                        </div>
+                        <div class="col-xs-9 contact-grdr">
+                            <ul>
+                                <li>(+84) 0938 69 2015 </li>
+                                <li>(+84) 0964 239 172 </li>
+                            </ul>
+                        </div>
+                        <div class="clearfix"> </div>
+                    </div>
+                    <div class="address">
+                        <div class="col-xs-3 contact-grdl">
+                            <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+                        </div>
+                        <div class="col-xs-9 contact-grdr">
+                            <ul>
+                                <li>215 Điện Biên Phủ, P.15, Bình Thạnh,</li>
+                                <li>TP.Hồ Chí Minh</li>
+                            </ul>
+                        </div>
+                        <div class="clearfix"> </div>
+                    </div>
+                    <div class="mail">
+                        <div class="col-xs-3 contact-grdl">
+                            <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+                        </div>
+                        <div class="col-xs-9 contact-grdr">
+                            <ul>
+                                <li><a href="mailto:howl1542@gmail.com">howl1542@gmail.com</a></li>
+                            </ul>
+                        </div>
+                        <div class="clearfix"> </div>
+                    </div>
+                </div>
+                <div class="col-md-9 contact-grid">
+                    <form action="" method="POST" >
+                        {% csrf_token %}
+                        {{ form }}
+<!--                        <input type="text" value="Name" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Name';}" required="">-->
+<!--                        <input type="email" value="Email" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Email';}" required="">-->
+<!--                        <textarea type="text"  onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Message...';}" required="">Message...</textarea>-->
+                        <input type="submit" value="Send" >
+                    </form>
+                </div>
+
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+{%endblock%}

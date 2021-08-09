@@ -1,0 +1,274 @@
+{%extends 'base_min.html'%}
+
+{%block title%} {{post.title}} {%endblock%}
+{%block content%}
+{%load static%}
+
+<div class="move-text">
+    <div class="breaking_news">
+        <h2>Breaking News</h2>
+    </div>
+    <div class="marquee">
+        {%for post in hot_post|slice:":1"%}
+        <div class="marquee1"><a class="breaking" href="single.html">{{post.title}}</a></div>
+        <div class="clearfix"></div>
+        {%endfor%}
+    </div>
+    <div class="clearfix"></div>
+    <script type="text/javascript" src="{%static 'js/jquery.marquee.js' %}"></script>
+    <script>
+				  $('.marquee').marquee({ pauseOnHover: true });
+				  //@ sourceURL=pen.js
+				</script>
+</div>
+<div class="single">
+    <div class="container">
+        <div class="single-grid">
+            <div class="col-md-9 blog-left">
+                <div><h1  style="text-align: center; padding-bottom: 8px; ">{{post.title}}</h1></div>
+                <div class="blog-left-grid">
+<!--                    <div class="blog-leftl">-->
+<!--                        <h4>{{post.news_date}}</h4>-->
+
+<!--                    </div>-->
+                    <div class="">
+
+                        {% if post.header_image%}
+                        <img src="{{post.header_image.url}}" width="800px" height="500"><br/>
+                        {%endif%}
+
+                        <div> {{post.body|safe}} </div>
+                        <div class="blog-leftr">
+                        <ul >
+                            <li><i class="glyphicon glyphicon-user" aria-hidden="true"></i>{{post.author}}</li>
+
+                            <li>   <form action="{%url 'like_news' post.pk%}" method="POST">
+                                {% csrf_token %}
+                                {% if user.is_authenticated%}
+                                {% if liked %}
+                                <button type="submit", name="post_id", value="{{ post.id }}", class="btn btn-danger btn-sm">Unlikes</button>
+
+                                {% else %}
+                                <button type="submit", name="post_id", value="{{ post.id }}", class="btn btn-primary btn-sm">Likes</button>
+                                {% endif %}
+                                {%else%}
+                                 <small><a href="{%url 'login' %}">Đăng nhập </a> để like</small>
+                                {%endif%}
+                                <!--        Trên là dùng hàm count ở model rồi chuyển sang view rồi mới chuyển sang temp-->
+                                <!--        dưới là dùng thẳng trong temp lun -->
+                                <!--        -{{post.likes.count}}-->
+                                </form>
+
+                            </li>
+                            <li><i class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></i> {{total_likes}} Likes</li>
+
+                            <li><i class="glyphicon glyphicon-comment" aria-hidden="true"></i>{{total_cmt}} Bình luận</li>
+                            <li><i class="glyphicon glyphicon-calendar" aria-hidden="true"></i>{{post.news_date}}</li>
+                            <li>
+                                {% if user.is_authenticated%}
+                                            {% ifequal user.groups.all.0.name "PostMan" %}
+                                                {% if user.id == post.author.id%}
+                                                 <i class="glyphicon glyphicon-pencil"><a href="{%url 'update_news' post.pk %}">Sửa</a></i>
+
+                                                {%endif%}
+                                            {%endifequal%}
+                                        {% endif %}
+
+
+                            </li>
+                        </ul>
+                        </div>
+                        <h2 style="color:red; margin-bottom:10px">Bình luận...</h2>
+                        <div class="response" style=" background-color: ghostwhite;
+  width: 100%;
+
+  overflow-y: auto;">
+
+                            {%if not post.comments.all%}
+                            <div class="media response-info">
+                                Không có bình nào cả, hãy là người bình luận đầu tiên nhé...<a href="#">Thêm</a>
+                            </div>
+                            {%else%}
+                            {%for comment in post.comments.all%}
+                            <div class="media response-info" style="padding-left: 40px;">
+                                <div class="media-left response-text-left">
+                                    <a href="#">
+                                        <img class="media-object" src="{%static 'images/icon1.png'%}" alt=""/>
+                                    </a>
+                                    <h5><a href="#">{{comment.name}}</a></h5>
+                                </div>
+                                <div class="media-body response-text-right"><p>{{comment.body}}</p>
+                                    <ul>
+                                        <li>{{comment.date_added}}</li>
+                                        <li><a href="single.html">Reply</a></li>
+                                    </ul>
+
+                                </div>
+                                <div class="clearfix"> </div>
+                            </div>
+
+
+                            {%endfor%}
+                            {%endif%}
+
+                        </div>
+
+                        <h2 style="color:red; margin-bottom:10px">Leave your comment</h2>
+                        <div class="coment-form">
+
+                            {% if user.is_authenticated%}
+                            <form method="POST" >
+                                {{user.username}}
+                                {{post.id}}
+                                {%csrf_token%}
+                                <input type="hidden" value="{{user.username}}" name="username" >
+                                <input type="hidden" value="{{post.id}}" name="idpost" >
+
+                                <textarea type="text" placeholder="Ý kiến của bạn về bài này?" name="body"></textarea>
+                                <input type="submit" value="Bình luận" >
+                            </form>
+                            {%else%}
+                            <div class="media response-info">
+                                Đăng nhập để bình luận nhé!!<a href="{%url 'login' %}">Thêm</a>
+                            </div>
+                            {%endif%}
+                        </div>
+
+
+                    </div>
+
+                    <div class="clearfix"> </div>
+
+<!--                    <div class="response">-->
+<!--                        <h4>Bình luận...</h4>-->
+<!--                        {%if not post.comments.all%}-->
+<!--                        <div class="media response-info">-->
+<!--                            Không có bình nào cả, hãy là người bình luận đầu tiên nhé...<a href="#">Thêm</a>-->
+<!--                        </div>-->
+<!--                        {%else%}-->
+<!--                            {%for comment in post.comments.all%}-->
+<!--                                <div class="media response-info">-->
+<!--                                    <div class="media-left response-text-left">-->
+<!--                                        <a href="#">-->
+<!--                                            <img class="media-object" src="{%static 'images/icon1.png'%}" alt=""/>-->
+<!--                                        </a>-->
+<!--                                        <h5><a href="#">{{comment.name}}</a></h5>-->
+<!--                                    </div>-->
+<!--                                    <div class="media-body response-text-right">-->
+<!--                                        <p>{{comment.body}}</p>-->
+<!--                                        <ul>-->
+<!--                                            <li>{{comment.date_added}}</li>-->
+<!--                                            <li><a href="single.html">Reply</a></li>-->
+<!--                                        </ul>-->
+
+<!--                                    </div>-->
+<!--                                    <div class="clearfix"> </div>-->
+<!--                                </div>-->
+
+
+<!--                            {%endfor%}-->
+<!--                        {%endif%}-->
+
+<!--                    </div>-->
+
+
+<!--                    <div class="coment-form">-->
+<!--                        <h4>Leave your comment</h4>-->
+<!--                        <form method="POST" >-->
+<!--                            {{user.username}}-->
+<!--                            {{post.id}}-->
+<!--                            {%csrf_token%}-->
+<!--                            <input type="hidden" value="{{user.username}}" name="username" >-->
+<!--                            <input type="hidden" value="{{post.id}}" name="idpost" >-->
+
+<!--                            <textarea type="text" placeholder="Ý kiến của bạn về bài này?" name="body"></textarea>-->
+<!--                            <input type="submit" value="Bình luận" >-->
+<!--                        </form>-->
+<!--                    </div>-->
+                </div>
+            </div>
+            <div class="col-md-3 blog-right">
+                <div class="recent">
+                    <h3>TIN HOT HÔM NAY</h3>
+                    <div class="recent-grids">
+                        {%for post in hot_post|slice:":3"%}
+                            <div class="recent-grid">
+                                {% if post.header_image%}
+                                <div class="wom">
+                                    <a href="{% url 'news_detail' post.pk %}"><img src="{{post.header_image.url}}" alt=" " class="img-responsive" /></a>
+                                </div>
+                                {%else%}
+                                <div class="wom">
+                                    <a href="{% url 'news_detail' post.pk %}"><img src="{%static 'images/1.jpg'%}" alt=" " class="img-responsive" /></a>
+                                </div>
+                                {%endif%}
+                                <div class="wom-right">
+                                    <h4><a href="{% url 'news_detail' post.pk %}">{{post.title}}</a></h4>
+
+                                </div>
+                                <div class="clearfix"> </div>
+                            </div>
+                        {%endfor%}
+
+                            <div class="clearfix"> </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+</div>
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+
+
+
+<hr/>
+<!--    <h1>{{post.title}}</h1>-->
+<!--    <small>By: {{post.author}} - {{post.news_date}}-->
+
+<!--        {% if user.is_authenticated%}-->
+<!--            {% ifequal user.groups.all.0.name "PostMan" %}-->
+<!--                {% if user.id == post.author.id%}-->
+<!--                - <a href="{%url 'update_news' post.pk %}">Sửa</a>-->
+<!--                - <a href="{%url 'delete_news' post.pk %}">Xóa</a></br>-->
+<!--                {%endif%}-->
+<!--            {%endifequal%}-->
+<!--        {% endif %}-->
+<!--    </small>-->
+
+<!--    <hr/>-->
+<!--    <br/>-->
+<!--&lt;!&ndash;safe này đc dịch các tag html như in đậm, ví du thay vì nó hiện <strong>a</strong> thì nó in đậm lun chữ a >&ndash;&gt;-->
+<!--    {% if post.header_image%}-->
+<!--    <img src="{{post.header_image.url}}" width="639" height="479"><br/>-->
+<!--    {%endif%}-->
+
+<!--    {{post.body|safe}}-->
+
+<!--    <br><br>-->
+<!--    <a class="btn btn-secondary" href="{% url 'home'%}">Trở về </a>-->
+<!--    <br><br>-->
+<!--    <hr>-->
+<!--    <br>-->
+<!--    <form action="{%url 'like_news' post.pk%}" method="POST">-->
+<!--        {% csrf_token %}-->
+<!--     {% if user.is_authenticated%}-->
+<!--        {% if liked %}-->
+<!--        <button type="submit", name="post_id", value="{{ post.id }}", class="btn btn-danger btn-sm">Unlikes</button>-->
+
+<!--        {% else %}-->
+<!--        <button type="submit", name="post_id", value="{{ post.id }}", class="btn btn-primary btn-sm">Likes</button>-->
+<!--        {% endif %}-->
+<!--        {%else%}-->
+<!--        <small><a href="{%url 'login' %}">Đăng nhập </a> để like</small>-->
+<!--        {%endif%}-->
+<!--        - {{total_likes}} Likes-->
+<!--&lt;!&ndash;        Trên là dùng hàm count ở model rồi chuyển sang view rồi mới chuyển sang temp&ndash;&gt;-->
+<!--&lt;!&ndash;        dưới là dùng thẳng trong temp lun &ndash;&gt;-->
+<!--&lt;!&ndash;        -{{post.likes.count}}&ndash;&gt;-->
+<!--    </form>-->
+
+{%endblock%}

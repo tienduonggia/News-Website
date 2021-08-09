@@ -1,0 +1,43 @@
+{%extends 'base_min.html'%}
+{%block title%} ĐĂNG NHẬP {%endblock%}
+
+{%block content%}
+
+{%load static%}
+
+
+<div style="border-radius: 25px;
+  border: 2px solid black;
+
+  margin-left:35%;
+  margin-top:15px;
+  width: 350px;
+  height: 400px; " xmlns:border-radius="http://www.w3.org/1999/xhtml">
+
+
+    <div style="padding:20px">
+        <br>
+        <h1 style="text-align:center; color:red; font-size:50px;padding-top:10px" >LOGIN</h1>
+        <hr style="border: 1px solid red;">
+        <form method="POST">
+            {% csrf_token %}
+            <label>Tài khoản: </label>
+            <br>
+            <input type="text" name="username"
+                   style=" width:300px;margin-top:5px"/>
+            <br>
+            <label style="margin-top:20px;">Mật khẩu: </label>
+            <br>
+            <input type="password" name="password"
+                   style="margin-top:5px ;  width:300px"/>
+            <br>
+            <button class="btn btn-danger btn-block"type="submit" class="btn btn-secondary" style="margin-top:25px; width:300px; ">LOGIN</button>
+        </form>
+    </div>
+
+</div>
+<br>
+<br>
+
+
+{%endblock%}

@@ -1,0 +1,30 @@
+{%extends 'base_min.html'%}
+{%block title%} VIẾT BÁO {%endblock%}
+
+{%block content%}
+
+{% if user.is_authenticated%}
+{% ifequal user.groups.all.0.name "PostMan" %}
+        <h1>THÊM BÀI MỚI </h1>
+
+        <div class ="form-group">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+            <!--    as_p ở đây tương đương sẽ tự động tạo ra các trường vô thẻ <p> -->
+            <!--    nhưng như vật sẽ làm giao diện xấu đi vì kh thể custom thoe ý muốn vì thế t cần tạo 1 file FORM.PY để tùy biến-->
+                {{ form.media }}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-secondary">Gửi bài</button>
+            </form>
+        </div>
+
+        <script>
+            var name = '{{user.id}}';
+            document.getElementById("elder").value = name;
+        </script>
+
+    {%endifequal%}
+{%else%}
+<h1><strong>BẠN KHÔNG CÓ QUYỀN ZÔ ĐÂY </strong></h1>
+{%endif%}
+{%endblock%}

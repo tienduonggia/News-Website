@@ -1,0 +1,28 @@
+{%extends 'base_min.html'%}
+{%block title%} Thay đổi thông tin {%endblock%}
+
+{%block content%}
+<h1>Thay đổi thông tin </h1>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <div  {% if message.tags %} style="color:red" {% endif %}>
+        {{ message }}
+    </div>
+    {% endfor %}
+</ul>
+{% endif %}
+
+
+<div class ="form-group">
+    <form method="POST">
+        {% csrf_token %}
+        <!--    as_p ở đây tương đương sẽ tự động tạo ra các trường vô thẻ <p> -->
+        <!--    nhưng như vật sẽ làm giao diện xấu đi vì kh thể custom thoe ý muốn vì thế t cần tạo 1 file FORM.PY để tùy biến-->
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-secondary">CẬP NHẬP PROFILE</button>
+    </form>
+</div>
+{%endblock%}
+
